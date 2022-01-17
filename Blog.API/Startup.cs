@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Blog.Data.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.API
 {
@@ -26,6 +23,25 @@ namespace Blog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Replace with your connection string.
+            var connectionString = Configuration.GetConnectionString("mysql");
+
+            // Replace with your server version and type.
+            // Use 'MariaDbServerVersion' for MariaDB.
+            // Alternatively, use 'ServerVersion.AutoDetect(connectionString)'.
+            // For common usages, see pull request #1233.
+            var serverVersion = ServerVersion.AutoDetect(connectionString);
+
+            // Replace 'YourDbContext' with the name of your own DbContext derived class.
+            services.AddDbContext<ApplicationDbContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(connectionString, serverVersion)
+                    // The following three options help with debugging, but should
+                    // be changed or removed for production.
+                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    .EnableSensitiveDataLogging()
+                    .EnableDetailedErrors()
+            );
             services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Blog.API", Version = "v1"}); });
