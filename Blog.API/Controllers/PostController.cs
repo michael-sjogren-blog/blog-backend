@@ -1,31 +1,41 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using Blog.Data.DataAccess;
 using Blog.Data.Models;
+using Blog.Data.Transfer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Blog.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PostController : ControllerBase
+    public class PostsController : ControllerBase
     {
 
-        private readonly ILogger<PostController> _logger;
+        private readonly ILogger<PostsController> _logger;
         private readonly ApplicationDbContext _context;
 
-        public PostController(ILogger<PostController> logger, ApplicationDbContext context)
+        public PostsController(ILogger<PostsController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
         }
 
         [HttpGet]
-        public IEnumerable<Post> Get()
+        public async Task<IEnumerable<Post>> GetAll()
         {
-            return _context.Posts.ToArray();
+            _logger.Log(LogLevel.Information,"Returning posts");
+            return await _context.Posts.ToListAsync();
+        }
+        
+        [HttpPost]
+        public PostDto Create(PostCreateDto postCreateDto)
+        {
+            _logger.Log(LogLevel.Information,"Creating a post");
+            //var newPost = _context.Posts.Add();
+            return null;
         }
     }
 }
