@@ -11,15 +11,41 @@ namespace Blog.Data.DataAccess
         {
         }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Post>().HasData(new List<Post>
-            {
-                new Post{Content = "Some post text" , Id = 1 , Title = "Test Post"},
-                new Post{Content = "Some post text 2" , Id = 2 , Title = "Test Post 2"}
-            });
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.Author)
+                .WithMany(a => a.Posts)
+                .HasForeignKey(e => e.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            modelBuilder.Entity<Author>().HasData(
+                new Author
+                {
+                    Email = "someemail@email.com",
+                    Password = "da",
+                    Id = 1,
+                    FirstName = "Lars",
+                    LastName = "Jönsson",
+                    PhoneNumber = "07899321",
+                    UserName = "LasseJJ"
+                }
+            );
+            
+            modelBuilder.Entity<Post>().HasData(
+                new Post
+                {
+                    Content = "<b>This post has been seeded.</b>",
+                    Title = "Seeded Post",
+                    Id = 1,
+                    AuthorId = 1,
+                }
+            );
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Blog.API.Mapping;
 
 namespace Blog.API
 {
@@ -23,10 +24,10 @@ namespace Blog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Startup));
             // Replace with your connection string.
             var connectionString = Configuration.GetConnectionString("mysql");
             var serverVersion = ServerVersion.AutoDetect(connectionString);
-            
             services.AddDbContext<ApplicationDbContext>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(connectionString, serverVersion)
