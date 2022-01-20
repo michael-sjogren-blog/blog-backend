@@ -29,18 +29,21 @@ namespace Blog.API.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public async Task<ActionResult<List<PostDto>>> GetAllAsync()
         {
-            _logger.Log(LogLevel.Information, "Returning posts");
             try
             {
 
                 var posts = await _context.Posts.ToListAsync();
-                return Ok(_mapper.Map<List<PostDto>>(posts));
+                var dtos = _mapper.Map<ICollection<PostDto>>(posts);
+                _logger.Log(LogLevel.Information, "Returning posts");
+                return Ok(dtos);
             }
             catch (Exception e)
             {
-                return NoContent();
+                _logger.LogError("{}",e.Message);
+                return StatusCode(500, e.Message);
             }
         }
         
@@ -60,6 +63,24 @@ namespace Blog.API.Controllers
                 return NotFound();
             }
         }
+        
+        [HttpDelete]
+        [Route("{Id:int}")]
+        public async Task<IActionResult> DeleteOneAsync(int Id)
+        {
+            _logger.Log(LogLevel.Information, "Returning post");
+            try
+            {
+                var post = await _context.FindAsync<Post>(Id);
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult<PostDto>> Create(PostCreateDto postCreateDto)
@@ -69,11 +90,12 @@ namespace Blog.API.Controllers
             {
                 var newPost = await _context.Posts.AddAsync(_mapper.Map<Post>(postCreateDto));
                 await _context.SaveChangesAsync();
-                return Created("",_mapper.Map<PostDto>(newPost.Entity));
+                return Ok(_mapper.Map<PostDto>(newPost.Entity));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                return StatusCode(500, e.Message);
             }
 
             //var newPost = _context.Posts.Add(post);
