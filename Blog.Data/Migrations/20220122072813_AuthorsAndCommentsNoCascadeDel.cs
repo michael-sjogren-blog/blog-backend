@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Blog.Data.Migrations
 {
-    public partial class Inital : Migration
+    public partial class AuthorsAndCommentsNoCascadeDel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,6 +89,11 @@ namespace Blog.Data.Migrations
                 table: "Users",
                 columns: new[] { "Id", "Discriminator", "Email", "FirstName", "LastName", "Password", "PhoneNumber", "UserName" },
                 values: new object[] { 1, "Author", "someemail@email.com", "Lars", "Jönsson", "da", "07899321", "LasseJJ" });
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "Id", "AuthorId", "Content", "Title" },
+                values: new object[] { 1, 1, "<b>This post has been seeded.</b>", "Seeded Post" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",

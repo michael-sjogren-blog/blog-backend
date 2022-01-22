@@ -21,9 +21,8 @@ namespace Blog.Data.DataAccess
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.Author)
                 .WithMany(a => a.Posts)
-                .HasForeignKey(e => e.AuthorId)
-                .OnDelete(DeleteBehavior.Cascade);
-            
+                .HasForeignKey(e => e.AuthorId);
+
             modelBuilder.Entity<Author>().HasData(
                 new Author
                 {
@@ -44,8 +43,11 @@ namespace Blog.Data.DataAccess
                     Title = "Seeded Post",
                     Id = 1,
                     AuthorId = 1,
+                    Author = null
                 }
             );
+            
+            
         }
     }
 }

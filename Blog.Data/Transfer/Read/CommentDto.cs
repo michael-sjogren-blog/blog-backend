@@ -1,4 +1,4 @@
-namespace Blog.Data.Transfer
+namespace Blog.Data.Transfer.Read
 {
     public class CommentDto
     {

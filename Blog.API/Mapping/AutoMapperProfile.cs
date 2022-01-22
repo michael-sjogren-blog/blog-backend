@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Blog.Data.Models;
 using Blog.Data.Transfer;
+using Blog.Data.Transfer.Read;
 
 namespace Blog.API.Mapping
 {

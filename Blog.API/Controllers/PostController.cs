@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Blog.Data.DataAccess;
 using Blog.Data.Models;
 using Blog.Data.Transfer;
+using Blog.Data.Transfer.Read;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -55,12 +54,14 @@ namespace Blog.API.Controllers
             try
             {
 
-                var post = await _context.Posts.FindAsync(Id);
-                return Ok(_mapper.Map<PostDto>(post));
+                var post = await _context.Posts
+                    .FindAsync(Id);
+                var dto = _mapper.Map<PostDto>(post);
+                return Ok(dto);
             }
             catch (Exception e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
         }
         
@@ -83,7 +84,7 @@ namespace Blog.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PostDto>> Create(PostCreateDto postCreateDto)
+        public async Task<ActionResult<PostDto>> Create([FromBody] PostCreateDto postCreateDto)
         {
             _logger.Log(LogLevel.Information, "Creating a post");
             try
@@ -92,14 +93,16 @@ namespace Blog.API.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(_mapper.Map<PostDto>(newPost.Entity));
             }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError("{}",e.Message);
+                return StatusCode(500, "Something went wrong saving to the database");
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return StatusCode(500, e.Message);
+                _logger.LogCritical("{}",e.Message);
+                return StatusCode(500, "Something went wrong");
             }
-
-            //var newPost = _context.Posts.Add(post);
-            return BadRequest("Invalid post");
         }
     }
 }

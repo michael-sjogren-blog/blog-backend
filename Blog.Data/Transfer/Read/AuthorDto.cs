@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Blog.Data.Models;
 
-namespace Blog.Data.Transfer
+namespace Blog.Data.Transfer.Read
 {
     public class AuthorDto : UserDto
     {

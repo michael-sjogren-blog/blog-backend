@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Blog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220119201900_AddedSeededPosts")]
-    partial class AddedSeededPosts
+    [Migration("20220122072813_AuthorsAndCommentsNoCascadeDel")]
+    partial class AuthorsAndCommentsNoCascadeDel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
