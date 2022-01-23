@@ -13,6 +13,9 @@ namespace Blog.API.Mapping
             CreateMap<PostDto, Post>().ReverseMap();
             CreateMap<PostCreateDto, Post>().ReverseMap();
             CreateMap<ICollection<Post>, List<PostDto>>().ReverseMap();
+
+            CreateMap<UserDto, UserDto>().ReverseMap();
+            CreateMap<AuthorDto, Author>().ReverseMap();
         }
     }
 }
