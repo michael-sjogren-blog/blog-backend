@@ -10,9 +10,7 @@ namespace Blog.Data.Models
         
         public User User { get; set; }
         public int UserId { get; set; }
-        public int Likes { get; set; } = 0;
-        public int Dislikes { get; set; } = 0;
-        
+
         public Comment()
         {
             

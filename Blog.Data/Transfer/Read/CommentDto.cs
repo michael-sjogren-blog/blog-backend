@@ -7,8 +7,6 @@ namespace Blog.Data.Transfer.Read
         
         public UserDto User { get; set; }
         public int UserId { get; set; }
-        public int Likes { get; set; }
-        public int Dislikes { get; set; }
 
         public CommentDto()
         {
