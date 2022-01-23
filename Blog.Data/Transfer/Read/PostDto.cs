@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using Blog.Data.Models;
 
@@ -9,7 +10,9 @@ namespace Blog.Data.Transfer.Read
         public string Title { get; set; }
         public string Content { get; set; }
         public int AuthorId { get; set; }
-        public UserDto Author { get; set; }
+        public int LikeCount { get; set; }
+        public string DatePosted { get; set; }
+        public AuthorDto Author { get; set; }
         public PostDto()
         {
             

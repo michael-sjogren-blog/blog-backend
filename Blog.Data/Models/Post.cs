@@ -1,6 +1,5 @@
-
+using System;
 using System.ComponentModel.DataAnnotations;
-using Blog.Data.Transfer;
 
 namespace Blog.Data.Models
 {
@@ -12,7 +11,8 @@ namespace Blog.Data.Models
         public string Content { get; set; }
         public int AuthorId { get; set; }
         public Author Author { get; set; }
-
+        public int LikeCount { get; set; } = 0;
+        public DateTime DatePosted { get; set; }
         public Post()
         {
             
