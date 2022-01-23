@@ -55,7 +55,9 @@ namespace Blog.API.Controllers
             {
 
                 var post = await _context.Posts
-                    .FindAsync(Id);
+                    .Include(p => p.Author)
+                    .FirstAsync(p => p.Id == Id);
+                post.Author.Posts = new List<Post>();
                 var dto = _mapper.Map<PostDto>(post);
                 return Ok(dto);
             }
