@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Blog.Data.DataAccess;
 using Blog.Data.Models;
+using Blog.Data.Models.Repository;
 using Blog.Data.Transfer;
 using Blog.Data.Transfer.Read;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +19,15 @@ namespace Blog.API.Controllers
     public class PostsController : ControllerBase
     {
         private readonly ILogger<PostsController> _logger;
+        private readonly IRepository<Post, int> _postsRepository;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public PostsController(ILogger<PostsController> logger, IMapper mapper, ApplicationDbContext context)
+        public PostsController(ILogger<PostsController> logger, IMapper mapper, ApplicationDbContext context, IRepository<Post, int> postsRepository)
         {
             _logger = logger;
             _context = context;
+            _postsRepository = postsRepository;
             _mapper = mapper;
         }
 
@@ -33,16 +37,16 @@ namespace Blog.API.Controllers
         {
             try
             {
-
-                var posts = await _context.Posts.ToListAsync();
-                var dtos = _mapper.Map<ICollection<PostDto>>(posts);
+                
+                var posts = await _postsRepository.GetAll();
+                var dtos = _mapper.Map<ICollection>(posts);
                 _logger.Log(LogLevel.Information, "Returning posts");
                 return Ok(dtos);
             }
             catch (Exception e)
             {
                 _logger.LogError("{}",e.Message);
-                return StatusCode(500, e.Message);
+                return StatusCode(500, "Something went wrong");
             }
         }
         

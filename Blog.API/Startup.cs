@@ -9,6 +9,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Blog.API.Mapping;
+using Blog.Data.Models;
+using Blog.Data.Models.Repository;
 
 namespace Blog.API
 {
@@ -38,6 +40,7 @@ namespace Blog.API
             services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "Blog.API", Version = "v1"}); });
+            services.AddScoped<IRepository<Post, int>, PostsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
