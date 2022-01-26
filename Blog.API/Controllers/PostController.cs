@@ -58,9 +58,7 @@ namespace Blog.API.Controllers
             try
             {
 
-                var post = await _context.Posts
-                    .Include(p => p.Author)
-                    .FirstAsync(p => p.Id == Id);
+                var post = await _postsRepository.GetOne(Id);
                 post.Author.Posts = new List<Post>();
                 var dto = _mapper.Map<PostDto>(post);
                 return Ok(dto);
@@ -78,12 +76,10 @@ namespace Blog.API.Controllers
             _logger.Log(LogLevel.Information, "Returning post");
             try
             {
-                var post = await _context.FindAsync<Post>(Id);
-                _context.Posts.Remove(post);
-                await _context.SaveChangesAsync();
+                await _postsRepository.DeleteOne(Id);
                 return Ok();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return NotFound();
             }
@@ -92,12 +88,11 @@ namespace Blog.API.Controllers
         [HttpPost]
         public async Task<ActionResult<PostDto>> Create([FromBody] PostCreateDto postCreateDto)
         {
-            _logger.Log(LogLevel.Information, "Creating a post");
             try
             {
-                var newPost = await _context.Posts.AddAsync(_mapper.Map<Post>(postCreateDto));
-                await _context.SaveChangesAsync();
-                return Ok(_mapper.Map<PostDto>(newPost.Entity));
+                var newPost = await _postsRepository.Create(_mapper.Map<Post>(postCreateDto));
+                _logger.Log(LogLevel.Information, "Creating a post");
+                return Ok(_mapper.Map<PostDto>(newPost));
             }
             catch (DbUpdateException e)
             {
