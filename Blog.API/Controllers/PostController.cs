@@ -8,6 +8,7 @@ using Blog.Data.Models;
 using Blog.Data.Models.Repository;
 using Blog.Data.Transfer;
 using Blog.Data.Transfer.Read;
+using Blog.Data.Transfer.Update;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -52,13 +53,13 @@ namespace Blog.API.Controllers
         
         [HttpGet]
         [Route("{Id:int}")]
-        public async Task<ActionResult<PostDto>> GetOneAsync(int Id)
+        public async Task<ActionResult<PostDto>> GetOneAsync(int id)
         {
             _logger.Log(LogLevel.Information, "Returning post");
             try
             {
 
-                var post = await _postsRepository.GetOne(Id);
+                var post = await _postsRepository.GetOne(id);
                 post.Author.Posts = new List<Post>();
                 var dto = _mapper.Map<PostDto>(post);
                 return Ok(dto);
@@ -92,6 +93,28 @@ namespace Blog.API.Controllers
             {
                 var newPost = await _postsRepository.Create(_mapper.Map<Post>(postCreateDto));
                 _logger.Log(LogLevel.Information, "Creating a post");
+                return Ok(_mapper.Map<PostDto>(newPost));
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError("{}",e.Message);
+                return StatusCode(500, "Something went wrong saving to the database");
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("{}",e.Message);
+                return StatusCode(500, "Something went wrong");
+            }
+        }
+
+
+        [HttpPut]
+        public async Task<ActionResult<PostDto>> Update([FromBody] PostUpdateDto postUpdateDto , int id)
+        {
+            try
+            {
+                var newPost = await _postsRepository.UpdateOne(_mapper.Map<Post>(postUpdateDto) , id);
+                _logger.Log(LogLevel.Information, "updating a post");
                 return Ok(_mapper.Map<PostDto>(newPost));
             }
             catch (DbUpdateException e)

@@ -44,10 +44,15 @@ namespace Blog.Data.Models.Repository
 
         public async Task<TEntity> UpdateOne(TEntity entity , TKey id)
         {
-            if ( (await _entities.FindAsync(id)) == null) throw new Exception("Not Found");
-            var updatedEntity = _entities.Update(entity).Entity;
+            
+            var e = await _entities.FindAsync(id);
+          
+            if (e == null) throw new Exception("Could not find entity with that id");
+            _context.Entry(e).State = EntityState.Detached;
+            _entities.Update(entity).State = EntityState.Modified;
             await SaveChanges();
-            return updatedEntity;
+            _context.Entry<TEntity>(entity).State = EntityState.Detached;
+            return entity;
         }
         
         

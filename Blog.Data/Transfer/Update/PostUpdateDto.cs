@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Data.Transfer.Update
@@ -12,5 +13,8 @@ namespace Blog.Data.Transfer.Update
         public string Content { get; set; }
         [Range(1,int.MaxValue)]
         public int AuthorId { get; set; }
+        public DateTime DatePosted {get;set;} = DateTime.Now;
+        public int LikeCount {get;set;}
+
     }
 }

@@ -3,6 +3,7 @@ using AutoMapper;
 using Blog.Data.Models;
 using Blog.Data.Transfer;
 using Blog.Data.Transfer.Read;
+using Blog.Data.Transfer.Update;
 
 namespace Blog.API.Mapping
 {
@@ -12,6 +13,7 @@ namespace Blog.API.Mapping
         {
             CreateMap<PostDto, Post>().ReverseMap();
             CreateMap<PostCreateDto, Post>().ReverseMap();
+            CreateMap<PostUpdateDto, Post>().ReverseMap();
             CreateMap<ICollection<Post>, List<PostDto>>().ReverseMap();
 
             CreateMap<UserDto, UserDto>().ReverseMap();
