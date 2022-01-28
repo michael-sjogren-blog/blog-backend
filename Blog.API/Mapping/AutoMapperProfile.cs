@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Blog.Data.Models;
-using Blog.Data.Transfer;
-using Blog.Data.Transfer.Read;
-using Blog.Data.Transfer.Update;
+using Blog.Data.Transfer.Post;
+using Blog.Data.Transfer.Author;
+using Blog.Data.Transfer.User;
 
 namespace Blog.API.Mapping
 {

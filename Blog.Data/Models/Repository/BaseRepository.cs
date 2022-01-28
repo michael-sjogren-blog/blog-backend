@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blog.Data.DataAccess;
@@ -20,8 +19,8 @@ namespace Blog.Data.Models.Repository
         public async Task<TEntity> GetOne(TKey id)
         {
             var entity = await _entities.FindAsync(id);
-            
-            return entity ?? throw new Exception("Not Found");
+            if (entity == null) throw new Exception("Not Found");
+            return entity;
         }
 
         public async Task<IEnumerable<TEntity>> GetAll()

@@ -1,4 +1,6 @@
-namespace Blog.Data.Transfer.Read
+using Blog.Data.Transfer.User;
+
+namespace Blog.Data.Transfer
 {
     public class CommentDto
     {

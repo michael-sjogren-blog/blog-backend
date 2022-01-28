@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 
 #nullable enable
-namespace Blog.Data.Transfer
+namespace Blog.Data.Transfer.Post
 {
     public class PostCreateDto
     {
@@ -12,9 +12,10 @@ namespace Blog.Data.Transfer
         public string? Content { get; set; }
         [Range(1,int.MaxValue)]
         public int AuthorId { get; set; }
-        public DateTime DatePosted {get;init;}
+
+        public DateTime DatePosted {get;set;}
         
-        [MinLength(0 , ErrorMessage = "LikeCount must be above -1")]
+        [Range(0 , int.MaxValue , ErrorMessage = "LikeCount must be above -1")]
         public int LikeCount {get;init;} = 1;
         public PostCreateDto()
         {

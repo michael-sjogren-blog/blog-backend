@@ -1,6 +1,6 @@
-namespace Blog.Data.Transfer.Read
+namespace Blog.Data.Transfer.User
 {
-    public class UserDto
+    public class UserUpdateDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -9,7 +9,7 @@ namespace Blog.Data.Transfer.Read
         public string UserName { get; set; }
         public string PhoneNumber { get; set; }
 
-        public UserDto()
+        public UserUpdateDto()
         {
             
         }

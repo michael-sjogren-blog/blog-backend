@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Blog.Data.Transfer.Update
+namespace Blog.Data.Transfer.Post
 {
     public class PostUpdateDto
     {

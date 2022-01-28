@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
-using Blog.Data.Models;
+using Blog.Data.Transfer.Post;
+using Blog.Data.Transfer.User;
 
-namespace Blog.Data.Transfer.Read
+namespace Blog.Data.Transfer.Author
 {
     public class AuthorDto : UserDto
     {

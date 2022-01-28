@@ -1,8 +1,7 @@
-using System;
-using System.Runtime.InteropServices;
-using Blog.Data.Models;
 
-namespace Blog.Data.Transfer.Read
+using Blog.Data.Transfer.Author;
+
+namespace Blog.Data.Transfer.Post
 {
     public class PostDto
     {
